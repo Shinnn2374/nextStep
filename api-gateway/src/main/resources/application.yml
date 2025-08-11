@@ -1,0 +1,28 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: user-service
+              uri: lb://user-service
+              predicates:
+                - Path=/api/users/**
+              filters:
+                - StripPrefix=1
+            - id: eureka-server
+              uri: http://eureka-server:8761
+              predicates:
+                - Path=/eureka/**
+
+
+
+
+    eureka:
+      client:
+        service-url:
+          defaultZone: http://eureka-server:8761/eureka
